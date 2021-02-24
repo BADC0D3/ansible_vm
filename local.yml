@@ -42,13 +42,13 @@
       group: root
 
   - name: set wallpaper
-    become_user: "{{localuser}}"
+    become_user: "{{ localuser }}"
     dconf:
       key: "/org/gnome/desktop/background/picture-uri"
       value: "'file:///usr/share/backgrounds/ansible-wallpaper.jpeg'"
 
   - name: set wallpaper position
-    become_user: "{{localuser}}"
+    become_user: "{{ localuser }}"
     dconf:
       key: "/org/gnome/desktop/background/picture-options"
       value: "'zoom'"
@@ -56,15 +56,15 @@
   - name: copy .bashrc file
     copy:
       src: files/bashrc
-      dest: "/home/{{localuser}}/.bashrc"
-      owner: "{{localuser}}"
-      group: "{{localuser}}"
+      dest: "/home/{{ localuser }}/.bashrc"
+      owner: "{{ localuser }}"
+      group: "{{ localuser }}"
 
-  - name: add pub key for {{localuser}}
+  - name: add pub key for {{ localuser }}
     authorized_key:
-      user: "{{localuser}}"
+      user: "{{ localuser }}"
       state: present
-      key: "{{localuserPubCert}}"
+      key: "{{ localuserPubCert }}"
 
 
   - name: allow ssh in UFW
@@ -89,7 +89,7 @@
     authorized_key:
       user: ansibleUser
       state: present
-      key: "{{ansibleUserPubCert}}"
+      key: "{{ ansibleUserPubCert }}"
 
   - name: set up sudoers file for ansibleUser
     copy:
