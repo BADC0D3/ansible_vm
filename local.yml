@@ -6,6 +6,13 @@
     localuser: badc0d3
 
   tasks:
+
+  - name: Update OS
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
   - name: install apts
     package:
       name: 
@@ -16,6 +23,13 @@
         - terminator
         - openssh-server
         - python3-psutil
+      state: latest
+
+  - name: Install vscode --classic
+    snap:
+      name: code
+      classic: yes
+    when: ansible_distribution == "Ubuntu"
 
   - name: copy wallpaper file
     copy:
