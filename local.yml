@@ -10,6 +10,7 @@
         - htop
         - tmux
         - nano
+        - curl
         - terminator
         - openssh-server
         - python3-psutil
