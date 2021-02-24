@@ -2,6 +2,8 @@
 - hosts: localhost
   connection: local
   become: true
+  vars:
+    localuser: badc0d3
 
   tasks:
   - name: install apts
@@ -23,13 +25,13 @@
       group: root
 
   - name: set wallpaper
-    become_user: badc0d3
+    become_user: {{localuser}}
     dconf:
       key: "/org/gnome/desktop/background/picture-uri"
       value: "'file:///usr/share/backgrounds/ansible-wallpaper.jpeg'"
 
   - name: set wallpaper position
-    become_user: badc0d3
+    become_user: {{localuser}}
     dconf:
       key: "/org/gnome/desktop/background/picture-options"
       value: "'zoom'"
@@ -37,9 +39,9 @@
   - name: copy .bashrc file
     copy:
       src: files/bashrc
-      dest: /home/badc0d3/.bashrc
-      owner: badc0d3
-      group: badc0d3
+      dest: /home/{{localuser}}/.bashrc
+      owner: {{localuser}}
+      group: {{localuser}}
 
   - name: add ansible user
     user:
