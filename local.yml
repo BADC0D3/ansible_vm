@@ -4,7 +4,10 @@
   become: true
 
   tasks:
-  - name: install htop
+  - name: install apts
     package:
-      name: htop
-      
+      name: 
+        - htop
+        - tmux
+        - nano
+        - openssh-server
