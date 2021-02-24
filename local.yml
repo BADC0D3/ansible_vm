@@ -4,6 +4,8 @@
   become: true
   vars:
     localuser: badc0d3
+    localuserPubCert: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDibktLbugC/D9/JNh2KjobItORz/xyw1fCgX/bz60SJ badc0d3"
+    ansibleUserPubCert: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC7waWAX8znq8sfT/7wHTynn9R0ilKJJWV9St5NgkmMm ansibleUser"
 
   tasks:
 
@@ -57,12 +59,38 @@
       owner: "{{localuser}}"
       group: "{{localuser}}"
 
-  - name: add ansible user
+  - name: add pub key for {{localuser}}
+    authorized_key:
+      user: "{{localuser}}"
+      state: present
+      key: "{{localuserPubCert}}"
+
+
+  - name: allow ssh in UFW
+    ufw:
+      rule: allow
+      name: OpenSSH
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Set firewall default policy
+    ufw: 
+      state: enabled 
+      policy: reject
+    when: ansible_distribution == "Ubuntu"
+
+  - name: add user ansibleUser
     user:
       name: ansibleUser
+      groups: root
       system: yes
 
-  - name: set up sudo for ansible user
+  - name: add pub key for ansibleUser
+    authorized_key:
+      user: ansibleUser
+      state: present
+      key: "{{ansibleUserPubCert}}"
+
+  - name: set up sudoers file for ansibleUser
     copy:
       src: files/sudoer_ansibleUser
       dest: /etc/sudoers.d/ansibleUser
