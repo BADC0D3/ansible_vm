@@ -33,6 +33,7 @@
       classic: yes
     when: ansible_distribution == "Ubuntu"
 
+
   - name: copy wallpaper file
     copy:
       src: files/wallpaper.jpeg
